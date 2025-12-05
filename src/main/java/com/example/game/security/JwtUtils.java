@@ -13,7 +13,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Component
@@ -24,15 +23,15 @@ public class JwtUtils {
     private long jwtExpiration;
 
     // 1 tạo token
-    public String genToken(String username) {
-        Map<String, Objects> clams = new HashMap<>();
-        return createToken(clams, username);
+    public String generateToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username);
     }
 
-    public String createToken(Map<String, Objects> clams, String username) {
+    public String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder() //-> design pattern : builder pattern xây dựng đối tượng
                 // theo từng bước
-                .setClaims(clams)// bố sung thông tin phụ nhu email, role,...
+                .setClaims(claims)// bố sung thông tin phụ nhu email, role,...
                 .setSubject(username)// tên chủ sỡ hữu token
                 .setIssuedAt(new Date(System.currentTimeMillis()))// thời gian tạo token
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) // thời gian hết hạn
@@ -60,10 +59,10 @@ public class JwtUtils {
     }
 
     public Claims extractALLClaims(String token){
-        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJwt(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
     }
 
-    public Boolean validExpiration(String token){
+    public Boolean isExpirated(String token){
         return extractExpiration(token).before(new Date());
     }
 
@@ -73,6 +72,6 @@ public class JwtUtils {
 
     public Boolean validateToken(String token, UserDetails userDetails){
         final String username = extractUsername(token);
-        return  (username.equals(userDetails.getUsername()) && !validExpiration(token));
+        return  (username.equals(userDetails.getUsername()) && !isExpirated(token));
     }
 }

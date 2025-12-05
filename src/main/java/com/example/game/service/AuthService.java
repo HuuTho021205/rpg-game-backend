@@ -56,7 +56,7 @@ public class AuthService {
         // tạo token trả cho user khi đăng nhap thành công
         var user = userRepo.findByUsername(request.getUsername())
                 .orElseThrow();
-        String jwtToken = jwtUtils.genToken(user.getUsername());
+        String jwtToken = jwtUtils.generateToken(user.getUsername());
         return new AuthResponse(jwtToken);
     }
 }
