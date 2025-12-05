@@ -9,6 +9,6 @@ import lombok.Data;
 public class CharacterRequest {
     @NotBlank(message = "Tên không được để trống")
     private String name;
-    @ValidStatus
-    private JobClass jobClass;
+    @ValidStatus(message = "Chức nghiệp không hợp lệ (WARRIOR, MAGE, ARCHER)")
+    private String jobClass;
 }

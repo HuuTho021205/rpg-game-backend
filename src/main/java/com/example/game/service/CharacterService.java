@@ -32,7 +32,7 @@ public class CharacterService {
     private static final int ARCHER_ATTACK = 20;
     private static final int ARCHER_DEFENSE = 12;
 
-    public GameCharacter createCharacter (String charracterName, JobClass jobClass){
+    public GameCharacter createCharacter (String charracterName, String jobClassStr){
         // xác định chủ sở hữu từ jwt token
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -44,12 +44,12 @@ public class CharacterService {
         if (gameCharacterRepo.existsByUserId(user.getId())){
             throw new IllegalStateException("User đã có nhân vật. Không thể tạo mới");
         }
-
+        JobClass jobClass = JobClass.valueOf(jobClassStr.toUpperCase());
         // tạo mới nhân vật
         GameCharacter character = new GameCharacter();
         character.setUser(user);
         character.setName(charracterName);
-        character.setJobClass(String.valueOf(jobClass));
+        character.setJobClass(jobClass.name());
 
         character.setLevel(STARTING_LEVEL);
         character.setExp(STARTING_EXP);
@@ -75,7 +75,7 @@ public class CharacterService {
                 character.setDefense(WARRIOR_DEFENSE);
                 break;
             }
-            case ACHOR -> {
+            case ACHER -> {
                 character.setMaxHp(ARCHER_MAX_HP);
                 character.setHp(ARCHER_MAX_HP);
                 character.setAttack(ARCHER_ATTACK);

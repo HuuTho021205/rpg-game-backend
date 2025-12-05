@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GameCharacterRepo extends JpaRepository<GameCharacter,Long> {
-    Optional<GameCharacter> findByUserId(String userId);
+    Optional<GameCharacter> findByUserId(Long userId);
 
     boolean existsByUserId(Long userId);
 }
