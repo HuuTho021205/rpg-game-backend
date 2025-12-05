@@ -1,6 +1,8 @@
 package com.example.game.controller;
 
 import com.example.game.dto.AuthRequest;
+import com.example.game.dto.AuthResponse;
+import com.example.game.dto.LoginRequest;
 import com.example.game.dto.UserResponse;
 import com.example.game.service.AuthService;
 import com.example.game.service.UserMapper;
@@ -22,5 +24,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody AuthRequest request){
             return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login ( @RequestBody LoginRequest request){
+        return ResponseEntity.ok(authService.login(request));
     }
 }
